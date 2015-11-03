@@ -1,0 +1,53 @@
+Configuration:
+  status: warn
+
+  Appenders:
+    Console: #输出结果到System.out 或是System.err
+      name: Console
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+    NoSql: #输出到mongoDB
+      name: MongoDbLog
+      MongoDb: 
+        databaseName: logs
+        collectionName: fmlog
+        server: 10.108.88.209
+        port: 27017
+        username: fdm
+        password: fdmpassword
+    RollingFile: #自动追加信息到文件中，直至文件达到预定的大小，然后自动重新生成另一个文件来记录之后的日志。
+      - name: RollingFile
+        fileName: logs/fmApp.log
+        filePattern: "logs/$${date:yyyy-MM}/logApp-%d{yyyy-MM-dd}-%i.log"
+        PatternLayout:
+          Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+        ThresholdFilter:
+          level: INFO
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 24
+          SizeBasedTriggeringPolicy:
+            size: 500 MB
+      - name: ErrorFile #error级别的告警，单独保存
+        fileName: logs/error.log
+        filePattern: "logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log"
+        PatternLayout:
+          Pattern: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+        ThresholdFilter:
+          level: ERROR
+        Policies:
+          TimeBasedTriggeringPolicy:
+            modulate: true
+            interval: 24
+          SizeBasedTriggeringPolicy:
+            size: 500 MB
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+       - ref: Console
+       - ref: ErrorFile
+       - ref: RollingFile
+       - ref: MongoDbLog
