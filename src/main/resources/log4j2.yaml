@@ -10,12 +10,12 @@ Configuration:
     NoSql: #输出到mongoDB
       name: MongoDbLog
       MongoDb: 
-        databaseName: logs
-        collectionName: fmlog
+        databaseName: springbootlog
+        collectionName: log
         server: 10.108.88.209
         port: 27017
-        username: fdm
-        password: fdmpassword
+        username: springDemo
+        password: springDemo
     RollingFile: #自动追加信息到文件中，直至文件达到预定的大小，然后自动重新生成另一个文件来记录之后的日志。
       - name: RollingFile
         fileName: logs/fmApp.log
