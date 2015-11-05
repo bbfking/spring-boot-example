@@ -1,3 +1,3 @@
 # spring-boot-example
 some example about spring
-提交测试
+2015-11-5添加mongodb的支持
